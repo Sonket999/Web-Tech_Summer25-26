@@ -69,7 +69,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
                 else{
                     setcookie("remember_user", "", time()-3600, "/");
                 }
+                $jsonfile = "../Model/user.json";
+                $users = [];
+                if(file_exists($jsonfile))
+                {
+                    $jsondata = file_get_contents($jsonfile);
+                    $users = json_decode($jsondata, true) ?? [];
+                    $users[] = [
+                    'name' => $name,
+                    'email' => $email,
+                    'website' => $website,
+                    'comment' => $comment,
+                    'gender' => $gender,
+                    "timestamp" => time()
+                ];
+                file_put_contents($jsonfile, json_encode($users, JSON_PRETTY_PRINT));
+            }
         }
     }
-
 ?>
